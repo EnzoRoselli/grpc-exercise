@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package flight;
+
+option java_package = "com.proto.flightgrpc";
+option java_multiple_files = true;
+
+service FlightService{
+  rpc getFlights(FlightsRequest) returns(FlightsResponse) {};
+}
+
+message FlightsRequest{
+
+  //Must be a number between 1 and 12.
+  int32 hour = 1;
+  //Must be a number between 0 and 59.
+  int32 minutes = 2;
+  /*
+    The accepted values for this field are: "am", "AM", "pm", "PM".
+    If you send a different value, the application will assume AM/am
+    as default value.
+   */
+  TimeOfDay time_of_day = 3;
+}
+
+enum TimeOfDay{
+  AM = 0;
+  PM = 1;
+}
+
+message FlightsResponse{
+  repeated FlightResponseDTO flight_list = 1;
+}
+
+message FlightResponseDTO{
+  string flight = 1;
+  //Is an hour in format hh:mm for example '15:30'.
+  string departure_time = 2;
+}
